@@ -64,7 +64,9 @@ export function Skills() {
                 dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                 dragElastic={0.4}
                 dragTransition={{ bounceStiffness: 250, bounceDamping: 18 }}
-                className="draggable-skill p-6 bg-card/50 border border-border rounded-lg text-center hover:border-orange-500/40 hover:shadow-[0_15px_30px_rgba(245,158,11,0.12)] transition-all cursor-grab active:cursor-grabbing relative overflow-hidden"
+                className={`draggable-skill p-6 bg-card/50 border border-border rounded-lg text-center hover:border-orange-500/40 hover:shadow-[0_15px_30px_rgba(245,158,11,0.12)] transition-all cursor-grab active:cursor-grabbing relative overflow-hidden ${
+                  index === 4 ? 'md:col-start-2' : ''
+                }`}
               >
                 {/* Glow backdrop on hover */}
                 <motion.div
