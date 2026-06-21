@@ -171,12 +171,6 @@ export const translations = {
         'Finalist of 2022 National Vocational High School FIKSI Competition',
         'Polinema PKM-KC Contingent 2025',
       ],
-      projectsTitle: 'Projects',
-      projects: [
-        'Project Manager in PBL Development of POLINEMA Inlet Lab Web Profile',
-        'Project Manager in PBL Development of Tourism Travel Management System',
-        'Website Developer of POLINEMA Education and Reasoning Student Activity Unit (UKM)',
-      ],
     },
     portfolio: {
       title: 'Portfolio',
@@ -224,6 +218,27 @@ export const translations = {
           category: 'Graphic Design',
           description: 'Complete social media design including social media identity system including logos and guidelines',
           tags: ['Graphic Design', 'Branding', 'Logo Design', 'Social Media Design'],
+        },
+        {
+          id: 7,
+          title: 'Web Profile Lab Inlet POLINEMA',
+          category: 'Web Design',
+          description: 'PBL project: Served as Project Manager for the web profile of the POLINEMA Inlet Laboratory.',
+          tags: ['PBL', 'Project Management', 'Web Design'],
+        },
+        {
+          id: 8,
+          title: 'Tourism Travel Management System',
+          category: 'Web Design',
+          description: 'PBL project: Served as Project Manager for the development of a tourism travel management system.',
+          tags: ['PBL', 'Project Management', 'Web Design'],
+        },
+        {
+          id: 9,
+          title: 'UKM PP POLINEMA Website',
+          category: 'Web Design',
+          description: 'Served as Website Developer for the POLINEMA Education and Reasoning Student Activity Unit (UKM).',
+          tags: ['UKM', 'Web Design', 'Development'],
         },
       ],
       modal: {
@@ -416,12 +431,6 @@ export const translations = {
         'Finalis Festival Inovasi dan Kewirausahaan Siswa Indonesia (FIKSI) SMK Tingkat Nasional 2022',
         'Kontingen PKM-KC Polinema 2025',
       ],
-      projectsTitle: 'Proyek',
-      projects: [
-        'Project Manager di PBL Pembuatan Web Profile Lab Inlet POLINEMA',
-        'Project Manager di PBL Pembuatan Sistem Manajemen Travel Wisata',
-        'Developer Website UKM Pendidikan dan Penalaran POLINEMA',
-      ],
     },
     portfolio: {
       title: 'Portofolio',
@@ -469,6 +478,27 @@ export const translations = {
           category: 'Desain Grafid',
           description: 'Desain media sosial lengkap termasuk sistem identitas media sosial, termasuk logo dan panduan',
           tags: ['Desain Grafis', 'Branding', 'Desain Logo', 'Desain Social Media'],
+        },
+        {
+          id: 7,
+          title: 'Web Profile Lab Inlet POLINEMA',
+          category: 'Web Design',
+          description: 'Proyek PBL: Bertindak sebagai Project Manager untuk pembuatan web profil Laboratorium Inlet POLINEMA.',
+          tags: ['PBL', 'Project Management', 'Desain Web'],
+        },
+        {
+          id: 8,
+          title: 'Sistem Manajemen Travel Wisata',
+          category: 'Web Design',
+          description: 'Proyek PBL: Bertindak sebagai Project Manager untuk pembuatan sistem manajemen travel wisata.',
+          tags: ['PBL', 'Project Management', 'Desain Web'],
+        },
+        {
+          id: 9,
+          title: 'Website UKM Pendidikan & Penalaran',
+          category: 'Web Design',
+          description: 'Bertindak sebagai Website Developer untuk UKM Pendidikan dan Penalaran POLINEMA.',
+          tags: ['UKM', 'Desain Web', 'Development'],
         },
       ],
       modal: {

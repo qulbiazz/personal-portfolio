@@ -143,7 +143,7 @@ export function Skills() {
             <h3 className="text-xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent w-fit mb-4">
               {t.skills.additionalTitle}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <h4 className="text-xs font-bold text-muted-foreground/80 uppercase tracking-widest mb-2 transition-colors duration-300">{t.skills.hardSkills}</h4>
                 <p className="text-sm text-foreground/80 transition-colors duration-300">
@@ -159,14 +159,6 @@ export function Skills() {
                 <ul className="text-sm text-foreground/80 list-disc list-inside space-y-1 transition-colors duration-300">
                   {t.skills.awards.map((award, i) => (
                     <li key={i}>{award}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-muted-foreground/80 uppercase tracking-widest mb-2 transition-colors duration-300">{t.skills.projectsTitle}</h4>
-                <ul className="text-sm text-foreground/80 list-disc list-inside space-y-1 transition-colors duration-300">
-                  {t.skills.projects.map((project, i) => (
-                    <li key={i}>{project}</li>
                   ))}
                 </ul>
               </div>
