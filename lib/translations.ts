@@ -171,6 +171,12 @@ export const translations = {
         'Finalist of 2022 National Vocational High School FIKSI Competition',
         'Polinema PKM-KC Contingent 2025',
       ],
+      projectsTitle: 'Projects',
+      projects: [
+        'Project Manager in PBL Development of POLINEMA Inlet Lab Web Profile',
+        'Project Manager in PBL Development of Tourism Travel Management System',
+        'Website Developer of POLINEMA Education and Reasoning Student Activity Unit (UKM)',
+      ],
     },
     portfolio: {
       title: 'Portfolio',
@@ -409,6 +415,12 @@ export const translations = {
       awards: [
         'Finalis Festival Inovasi dan Kewirausahaan Siswa Indonesia (FIKSI) SMK Tingkat Nasional 2022',
         'Kontingen PKM-KC Polinema 2025',
+      ],
+      projectsTitle: 'Proyek',
+      projects: [
+        'Project Manager di PBL Pembuatan Web Profile Lab Inlet POLINEMA',
+        'Project Manager di PBL Pembuatan Sistem Manajemen Travel Wisata',
+        'Developer Website UKM Pendidikan dan Penalaran POLINEMA',
       ],
     },
     portfolio: {
