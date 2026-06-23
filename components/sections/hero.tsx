@@ -199,14 +199,16 @@ export function Hero() {
                 </motion.a>
               </Magnetic>
               <Magnetic>
-                <motion.button
+                <motion.a
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => smoothScrollToId('contact')}
+                  href={t.hero.portfolioLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full sm:w-auto px-8 py-3 border-2 border-orange-500/60 text-orange-500 font-semibold rounded-lg hover:bg-gradient-to-r hover:from-amber-500/10 hover:to-rose-500/10 hover:border-orange-500 transition-all cursor-pointer text-center block dark:text-orange-400"
                 >
-                  {t.hero.contactMe}
-                </motion.button>
+                  {t.hero.portfolio}
+                </motion.a>
               </Magnetic>
             </motion.div>
           </div>

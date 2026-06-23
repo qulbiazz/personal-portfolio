@@ -14,7 +14,8 @@ export const translations = {
       roles: ['UI/UX Designer', 'Graphic Designer', 'Social Media Designer', 'Software Engineer'],
       viewWork: 'View CV',
       cvLink: 'https://drive.google.com/file/d/16DSPziGofTuiRC19Uejr56fm_dWUdwEM/view?usp=sharing',
-      contactMe: 'Contact Me',
+      portfolio: 'Portfolio',
+      portfolioLink: 'https://drive.google.com/file/d/1lDWHd64xkgGoFsA1QLqpzfMM4PWQnRKA/view?usp=sharing',
     },
     about: {
       title: 'About',
@@ -274,7 +275,8 @@ export const translations = {
       roles: ['UI/UX Designer', 'Desainer Grafis', 'Spesialis Identitas Merek'],
       viewWork: 'Lihat CV',
       cvLink: 'https://drive.google.com/file/d/1_tsDI-uL2DtIeGsG_zGSodr45QhXi-p2/view?usp=sharing',
-      contactMe: 'Hubungi Saya',
+      portfolio: 'Portofolio',
+      portfolioLink: 'https://drive.google.com/file/d/1rP1P-r26BMMF2StWjdcnNJFJr1PRsxXK/view?usp=sharing',
     },
     about: {
       title: 'Tentang',
