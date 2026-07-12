@@ -274,7 +274,7 @@ export const translations = {
       name: 'QULBI KHUTSI AZZUMI',
       roles: ['UI/UX Designer', 'Desainer Grafis', 'Spesialis Identitas Merek'],
       viewWork: 'Lihat CV',
-      cvLink: 'https://drive.google.com/file/d/1FB-19qSAK2_31X_IprJf3QItGcif0kxp/view?usp=sharing',
+      cvLink: 'https://drive.google.com/file/d/11tuj3Fi2qWo02_VAixmPFr-sV-PrfoDr/view?usp=drive_link',
       portfolio: 'Portofolio',
       portfolioLink: 'https://drive.google.com/file/d/1rP1P-r26BMMF2StWjdcnNJFJr1PRsxXK/view?usp=sharing',
     },
