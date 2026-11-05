@@ -1,45 +1,17 @@
 'use client'
 
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { smoothScrollToId } from '@/lib/scroll-utils'
-import { Magnetic } from '@/components/ui/magnetic'
-import { InteractiveParticles } from '@/components/ui/interactive-particles'
 import { usePortfolioContext } from '@/components/ui/portfolio-context'
+import Image from 'next/image'
 
 export function Hero() {
-  const { t, language, theme } = usePortfolioContext()
+  const { t, language, theme, mounted } = usePortfolioContext()
   const roles = t.hero.roles
   const [typedText, setTypedText] = useState('')
   const [roleIndex, setRoleIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
-
-  // Mouse Parallax values
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  const springConfig = { damping: 25, stiffness: 150 }
-  const x = useSpring(useTransform(mouseX, [-300, 300], [-15, 15]), springConfig)
-  const y = useSpring(useTransform(mouseY, [-300, 300], [-15, 15]), springConfig)
-  
-  // Opposite parallax for background glow spotlight
-  const bgX = useSpring(useTransform(mouseX, [-300, 300], [25, -25]), springConfig)
-  const bgY = useSpring(useTransform(mouseY, [-300, 300], [25, -25]), springConfig)
-
-  const handleMouseMove = (event: React.MouseEvent) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const width = rect.width
-    const height = rect.height
-    const centerX = rect.left + width / 2
-    const centerY = rect.top + height / 2
-    mouseX.set(event.clientX - centerX)
-    mouseY.set(event.clientY - centerY)
-  }
-
-  const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
-  }
 
   // Reset typewriter when language changes
   useEffect(() => {
@@ -48,19 +20,19 @@ export function Hero() {
     setIsDeleting(false)
   }, [language])
 
-  // Typewriter effect logic
+  // Typewriter effect
   useEffect(() => {
     let timer: NodeJS.Timeout
     const currentRole = roles[roleIndex]
     if (!currentRole) return
 
-    const typingSpeed = isDeleting ? 30 : 60
+    const typingSpeed = isDeleting ? 30 : 65
 
     const handleTyping = () => {
       if (!isDeleting) {
         setTypedText(currentRole.slice(0, typedText.length + 1))
         if (typedText === currentRole) {
-          timer = setTimeout(() => setIsDeleting(true), 2000)
+          timer = setTimeout(() => setIsDeleting(true), 2200)
         } else {
           timer = setTimeout(handleTyping, typingSpeed)
         }
@@ -83,193 +55,229 @@ export function Hero() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' as const },
+      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
     },
   }
 
   return (
     <section
       id="hero"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="min-h-screen relative flex flex-col justify-between pt-28 pb-6 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden"
+      className="min-h-screen relative flex flex-col justify-between pt-24 pb-8 px-4 sm:px-6 bg-background overflow-hidden"
     >
-      {/* Mesh Gradient & Particles Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 select-none">
-        {/* Subtle Designer Grid Texture */}
-        <div 
-          className="absolute inset-0 opacity-[0.06]" 
-          style={{
-            backgroundImage: `
-              linear-gradient(var(--grid-color) 1px, transparent 1px),
-              linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px',
-          }}
+      {/* Subtle background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+        {/* Warm glow blob */}
+        <div
+          className={`absolute top-[15%] right-[5%] w-[500px] h-[500px] rounded-full blur-[140px] transition-opacity duration-700 ${
+            mounted && theme === 'dark' ? 'opacity-20 bg-orange-500' : 'opacity-10 bg-orange-400'
+          }`}
+        />
+        <div
+          className={`absolute bottom-[10%] left-[0%] w-[400px] h-[400px] rounded-full blur-[120px] transition-opacity duration-700 ${
+            mounted && theme === 'dark' ? 'opacity-15 bg-amber-500' : 'opacity-8 bg-amber-300'
+          }`}
         />
 
-        {/* Dot Matrix Pattern Overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.12]" 
+        {/* Subtle dot grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.4]"
           style={{
             backgroundImage: 'radial-gradient(var(--grid-color) 1px, transparent 0)',
-            backgroundSize: '20px 20px',
+            backgroundSize: '28px 28px',
           }}
         />
-
-        {/* Organic Noise Grain Overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.025] mix-blend-overlay" 
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          }}
-        />
-
-        <motion.div 
-          style={{ x: bgX, y: bgY }}
-          className={`absolute top-[20%] left-[50%] -translate-x-1/2 w-full max-w-[1000px] h-[600px] transition-all duration-300 ${
-            theme === 'dark' ? 'opacity-70 mix-blend-screen' : 'opacity-30 mix-blend-multiply'
-          }`}
-        >
-          <div className="absolute top-[10%] left-[15%] w-[350px] h-[350px] rounded-full bg-amber-500/25 blur-[100px] animate-[floating_8s_ease-in-out_infinite]" />
-          <div className="absolute top-[5%] left-[35%] w-[450px] h-[450px] rounded-full bg-orange-600/35 blur-[120px] animate-[floating_12s_ease-in-out_infinite_1s]" />
-          <div className="absolute top-[12%] left-[60%] w-[300px] h-[300px] rounded-full bg-rose-600/20 blur-[90px] animate-[floating_10s_ease-in-out_infinite_2s]" />
-        </motion.div>
-
-        {/* Interactive Particles Vector Network */}
-        <InteractiveParticles />
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-grow flex items-center justify-center w-full max-w-6xl mx-auto">
+      {/* Main Content */}
+      <div className="flex-grow flex items-center justify-center w-full max-w-5xl mx-auto">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center"
+          className="w-full grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center"
         >
-          {/* Left Side: Name and details */}
-          <div className="md:col-span-6 flex flex-col items-start text-left order-2 md:order-1">
-            {/* Main Title */}
+          {/* Left — Text content */}
+          <div className="md:col-span-7 flex flex-col text-left order-2 md:order-1">
+            {/* Eyebrow */}
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-[2px] bg-primary rounded-full" />
+              <span className="text-sm font-medium text-muted-foreground uppercase tracking-widest">
+                {t.hero.hello}
+              </span>
+            </motion.div>
+
+            {/* Name - Serif Display */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground leading-tight"
+              className="leading-[1.05] tracking-tight mb-4"
+              style={{
+                fontFamily: 'var(--font-instrument-serif)',
+                fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+                fontWeight: 400,
+              }}
             >
-              {t.hero.hello}<br />
-              <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text text-transparent block mt-2">
-                {t.hero.name}
-              </span>
+              <span className="text-foreground">Qulbi</span>
+              <br />
+              <span className="text-gradient italic">{language === 'en' ? 'Khutsi Azzumi.' : 'Khutsi Azzumi.'}</span>
             </motion.h1>
 
-            {/* Typing Subtitle */}
-            <motion.div variants={itemVariants} className="mb-8 h-12 flex items-center justify-start">
-              <p className="text-xl sm:text-2xl text-muted-foreground min-h-[2rem]">
+            {/* Typewriter role */}
+            <motion.div variants={itemVariants} className="mb-6 h-10 flex items-center">
+              <p className="text-lg sm:text-xl text-muted-foreground font-medium">
                 {typedText}
-                <span className="animate-pulse">|</span>
+                <span
+                  className="inline-block w-[2px] h-5 bg-primary ml-0.5 align-middle"
+                  style={{ animation: 'blink 1s ease-in-out infinite' }}
+                />
               </p>
+            </motion.div>
+
+            {/* Stats row */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center gap-6 sm:gap-8 mb-8 py-4 border-y border-border"
+            >
+              {[
+                { value: '2+', label: language === 'en' ? 'Years Exp.' : 'Tahun Pengalaman' },
+                { value: '20+', label: language === 'en' ? 'Projects' : 'Proyek' },
+                { value: '10+', label: language === 'en' ? 'Clients' : 'Klien' },
+              ].map((stat) => (
+                <div key={stat.value} className="text-left">
+                  <p
+                    className="text-2xl sm:text-3xl font-bold text-primary italic leading-none"
+                    style={{ fontFamily: 'var(--font-instrument-serif)' }}
+                  >
+                    {stat.value}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1 font-medium">{stat.label}</p>
+                </div>
+              ))}
             </motion.div>
 
             {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-start items-center w-full"
+              className="flex flex-col sm:flex-row gap-3 items-start"
             >
-              <Magnetic>
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  href={t.hero.cvLink}
+              <a
+                href={t.hero.cvLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 bg-foreground text-background font-semibold rounded-xl hover:opacity-85 hover:-translate-y-0.5 transition-all cursor-pointer text-sm shadow-md"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                {t.hero.viewWork}
+              </a>
+              <a
+                href={t.hero.portfolioLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3 border border-border rounded-xl text-foreground font-semibold hover:border-primary/50 hover:text-primary hover:-translate-y-0.5 transition-all cursor-pointer text-sm"
+              >
+                {t.hero.portfolio}
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </motion.div>
+
+            {/* Social links row */}
+            <motion.div variants={itemVariants} className="flex items-center gap-5 mt-8 text-sm text-muted-foreground">
+              {[
+                { label: 'Instagram', href: 'https://www.instagram.com/qlbiazzumi/' },
+                { label: 'Dribbble', href: 'https://dribbble.com/qulbi-azzumi' },
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/in/qulbikhutsiazzumi/' },
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 text-white font-semibold rounded-lg shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:brightness-110 transition-all cursor-pointer text-center block"
+                  className="hover:text-primary hover:-translate-y-0.5 transition-all"
                 >
-                  {t.hero.viewWork}
-                </motion.a>
-              </Magnetic>
-              <Magnetic>
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  href={t.hero.portfolioLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-8 py-3 border-2 border-orange-500/60 text-orange-500 font-semibold rounded-lg hover:bg-gradient-to-r hover:from-amber-500/10 hover:to-rose-500/10 hover:border-orange-500 transition-all cursor-pointer text-center block dark:text-orange-400"
-                >
-                  {t.hero.portfolio}
-                </motion.a>
-              </Magnetic>
+                  {social.label}
+                </a>
+              ))}
             </motion.div>
           </div>
 
-          {/* Right Side: Portrait Image */}
-          <div className="md:col-span-6 flex justify-center md:justify-end order-1 md:order-2">
+          {/* Right — Portrait */}
+          <div className="md:col-span-5 flex justify-center md:justify-end order-1 md:order-2">
             <motion.div
               variants={itemVariants}
-              className="relative w-full max-w-[420px] h-[500px] sm:h-[550px] md:h-[590px] overflow-hidden group cursor-pointer"
-              style={{ x, y }}
-              whileHover="hover"
+              className="relative"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
             >
-              {/* Backlight Glow Backdrop */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 via-orange-500/20 to-rose-500/20 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-700 rounded-full"
-                variants={{
-                  hover: { scale: 1.15, rotate: 15 }
-                }}
+              {/* Decorative frame */}
+              <div
+                className={`absolute -inset-3 rounded-[2rem] border-2 transition-colors ${
+                  mounted && theme === 'dark' ? 'border-white/5' : 'border-black/5'
+                }`}
               />
-              
-              {/* Photo */}
-              <motion.img
-                src="/profile.png"
-                alt="Qulbi Khutsi Azzumi"
-                className="w-full h-full object-cover origin-top translate-y-4 brightness-[1.05] contrast-[1.05]"
-                initial={{ filter: 'grayscale(100%)', scale: 1.25 }}
-                variants={{
-                  hover: {
-                    filter: 'grayscale(0%)',
-                    scale: 1.32,
-                  }
-                }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-              />
+
+              {/* Orange accent corner */}
+              <div className="absolute -top-2 -right-2 w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl opacity-80 blur-sm" />
+              <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-gradient-to-br from-rose-500 to-orange-500 rounded-xl opacity-60 blur-sm" />
+
+              {/* Image */}
+              <div className="relative w-[260px] sm:w-[300px] md:w-[340px] h-[320px] sm:h-[380px] md:h-[430px] rounded-[1.75rem] overflow-hidden shadow-2xl">
+                <Image
+                  src="/profile.png"
+                  alt="Qulbi Khutsi Azzumi"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                />
+                {/* Subtle gradient overlay at bottom */}
+                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent" />
+
+                {/* Floating badge */}
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute bottom-4 left-4 right-4 bg-background/90 backdrop-blur-sm rounded-xl px-3 py-2 border border-border shadow-lg"
+                >
+                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Currently</p>
+                  <p className="text-sm font-bold text-foreground">
+                    UI/UX & Graphic Designer
+                  </p>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll indicator */}
       <motion.div
-        animate={{ y: [0, 10, 0] }}
+        animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        className="w-full flex justify-center pb-4 z-10"
+        className="w-full flex justify-center pb-2 z-10"
       >
-        <svg
-          className="w-6 h-6 text-orange-500 cursor-pointer"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <button
           onClick={() => smoothScrollToId('about')}
+          className="flex flex-col items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer group"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-          />
-        </svg>
+          <span className="text-xs font-medium tracking-widest uppercase opacity-60 group-hover:opacity-100 transition-opacity">
+            {language === 'en' ? 'Discover' : 'Temukan'}
+          </span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </button>
       </motion.div>
     </section>
   )
 }
-

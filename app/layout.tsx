@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google'
 import './globals.css'
 import { CustomCursor } from '@/components/ui/custom-cursor'
 import { PortfolioProvider } from '@/components/ui/portfolio-context'
@@ -10,20 +10,33 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
+const instrumentSerif = Instrument_Serif({
+  variable: '--font-instrument-serif',
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+})
 
 export const metadata: Metadata = {
-  title: 'Qulbi Khutsi Azzumi - UI/UX & Graphic Designer',
-  description: 'Portfolio of Qulbi Khutsi Azzumi, a creative UI/UX and Graphic Designer showcasing digital design work and creative projects.',
-  generator: 'v0.app',
+  title: 'Qulbi Khutsi Azzumi — UI/UX & Graphic Designer',
+  description: 'Portfolio of Qulbi Khutsi Azzumi, a creative UI/UX and Graphic Designer specializing in Figma, Adobe Illustrator, and modern web design.',
+  generator: 'Next.js',
   icons: {
     icon: '/navbar-logo.png',
     apple: '/navbar-logo.png',
   },
+  openGraph: {
+    title: 'Qulbi Khutsi Azzumi — UI/UX & Graphic Designer',
+    description: 'Portfolio of Qulbi Khutsi Azzumi, a creative UI/UX and Graphic Designer.',
+    type: 'website',
+  },
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#000000' }],
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F9FAFB' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
 }
 
 export default function RootLayout({
@@ -31,9 +44,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // suppressHydrationWarning prevents errors from dynamic dark/light class added by PortfolioProvider
   return (
-    <html lang="en" className={`dark ${geistSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans antialiased">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased" suppressHydrationWarning>
         <PortfolioProvider>
           <CustomCursor />
           {children}
@@ -43,4 +57,3 @@ export default function RootLayout({
     </html>
   )
 }
-

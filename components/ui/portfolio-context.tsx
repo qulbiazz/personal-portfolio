@@ -12,23 +12,23 @@ type PortfolioContextType = {
   theme: Theme
   setTheme: (theme: Theme) => void
   t: typeof translations.en
+  mounted: boolean
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined)
 
 export function PortfolioProvider({ children }: { children: React.ReactNode }) {
-  // Safe initial values to prevent Next.js hydration mismatches
+  // Always use the same initial values on both server and client to prevent hydration mismatch
   const [language, setLanguageState] = useState<Language>('en')
-  const [theme, setThemeState] = useState<Theme>('dark')
+  const [theme, setThemeState] = useState<Theme>('light')
   const [mounted, setMounted] = useState(false)
 
-  // Initialize state from localStorage after mount
+  // Only read localStorage AFTER component has mounted on the client
   useEffect(() => {
     const savedLang = localStorage.getItem('portfolio-language') as Language
     if (savedLang === 'en' || savedLang === 'id') {
       setLanguageState(savedLang)
     } else {
-      // Default to user browser preference or Indonesian if IP/locale suggests it
       const browserLang = navigator.language.toLowerCase()
       if (browserLang.startsWith('id')) {
         setLanguageState('id')
@@ -39,26 +39,24 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     if (savedTheme === 'dark' || savedTheme === 'light') {
       setThemeState(savedTheme)
     } else {
-      // Default to system preference
-      const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
-      setThemeState(systemTheme)
+      // Check system preference, default to light
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      setThemeState(prefersDark ? 'dark' : 'light')
     }
 
     setMounted(true)
   }, [])
 
-  // Sync theme changes with DOM classes
+  // Sync theme to <html> class — only runs on client after mount
   useEffect(() => {
     if (!mounted) return
     const root = document.documentElement
-    if (theme === 'light') {
-      root.classList.remove('dark')
-      root.classList.add('light')
-      root.style.colorScheme = 'light'
-    } else {
-      root.classList.remove('light')
+    if (theme === 'dark') {
       root.classList.add('dark')
       root.style.colorScheme = 'dark'
+    } else {
+      root.classList.remove('dark')
+      root.style.colorScheme = 'light'
     }
   }, [theme, mounted])
 
@@ -72,16 +70,15 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('portfolio-theme', newTheme)
   }
 
-  // Reactive translation dictionary
+  // Always use 'en' translation on server (matches initial state)
   const t = translations[language] as unknown as typeof translations.en
 
   return (
-    <PortfolioContext.Provider value={{ language, setLanguage, theme, setTheme, t }}>
+    <PortfolioContext.Provider value={{ language, setLanguage, theme, setTheme, t, mounted }}>
       {children}
     </PortfolioContext.Provider>
   )
 }
-
 
 export function usePortfolioContext() {
   const context = useContext(PortfolioContext)

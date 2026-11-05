@@ -10,45 +10,35 @@ export function Experience() {
   const { ref, isVisible } = useScrollAnimation()
   const timelineRef = useRef<HTMLDivElement>(null)
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
-  const { t, theme } = usePortfolioContext()
+  const { t, language } = usePortfolioContext()
   const experiences = t.experience.items
 
-  // Scroll Progress Tracker for Timeline Line
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ['start center', 'end center'],
   })
-  
+
   const scaleYLine = useSpring(scrollYProgress, {
     stiffness: 90,
     damping: 20,
-    restDelta: 0.001
+    restDelta: 0.001,
   })
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
   }
 
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.6 },
-    },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: 'easeOut' as const } },
   }
 
   return (
     <section
       id="experience"
       ref={ref}
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden"
+      className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30 overflow-hidden"
     >
       <div className="max-w-4xl mx-auto">
         <motion.div
@@ -56,19 +46,33 @@ export function Experience() {
           initial="hidden"
           animate={isVisible ? 'visible' : 'hidden'}
           layout="position"
-          className="space-y-12"
+          className="space-y-14"
         >
-          {/* Section Title */}
-          <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl font-bold text-foreground">
-            {t.experience.title} <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text text-transparent">&</span> Work
-          </motion.h2>
+          {/* Section heading */}
+          <motion.div variants={itemVariants}>
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span className="inline-block w-5 h-[1.5px] bg-primary" />
+              {language === 'en' ? 'Work History' : 'Riwayat Kerja'}
+            </p>
+            <h2
+              className="text-foreground leading-tight"
+              style={{
+                fontFamily: 'var(--font-instrument-serif)',
+                fontSize: 'clamp(2.2rem, 5vw, 3.5rem)',
+                fontWeight: 400,
+              }}
+            >
+              {t.experience.title}{' '}
+              <span className="italic text-gradient">&amp; Work</span>
+            </h2>
+          </motion.div>
 
-          {/* Timeline Container */}
-          <div ref={timelineRef} className="relative pl-8 sm:pl-12 space-y-10">
-            {/* The single vertical timeline progress line */}
-            <div className="absolute left-[15px] sm:left-[23px] top-6 bottom-6 w-1 bg-secondary rounded-full border border-border overflow-hidden">
+          {/* Timeline */}
+          <div ref={timelineRef} className="relative pl-10 sm:pl-14 space-y-6">
+            {/* Timeline track */}
+            <div className="absolute left-[15px] sm:left-[23px] top-3 bottom-3 w-[2px] bg-border rounded-full overflow-hidden">
               <motion.div
-                className="w-full h-full bg-gradient-to-b from-amber-500 via-orange-500 to-rose-600 origin-top"
+                className="w-full h-full bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 origin-top"
                 style={{ scaleY: scaleYLine }}
               />
             </div>
@@ -82,86 +86,90 @@ export function Experience() {
                   className="relative group"
                   layout="position"
                 >
-                  {/* Timeline dot that changes color/glow when card is expanded */}
+                  {/* Timeline dot */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={
                       isVisible
-                        ? { scale: isExpanded ? 1.25 : 1, opacity: 1 }
+                        ? {
+                            scale: isExpanded ? 1.3 : 1,
+                            opacity: 1,
+                          }
                         : { scale: 0, opacity: 0 }
                     }
-                    transition={{ type: 'spring', stiffness: 300, damping: 20, delay: index * 0.1 }}
-                    className={`absolute -left-12 sm:-left-16 top-2 w-8 h-8 rounded-full border-4 border-background flex items-center justify-center z-10 transition-all duration-300 ${
+                    transition={{
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 20,
+                      delay: index * 0.1,
+                    }}
+                    className={`absolute -left-[38px] sm:-left-[54px] top-4 w-7 h-7 rounded-full border-2 border-background flex items-center justify-center z-10 transition-all duration-300 ${
                       isExpanded
-                        ? 'bg-gradient-to-r from-amber-500 to-rose-500 shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                        : 'bg-muted group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-orange-500'
+                        ? 'bg-gradient-to-br from-amber-500 to-rose-500 shadow-[0_0_12px_rgba(245,158,11,0.45)]'
+                        : 'bg-muted group-hover:bg-gradient-to-br group-hover:from-amber-500 group-hover:to-orange-500'
                     }`}
                   >
-                    <Briefcase className={`w-3.5 h-3.5 ${isExpanded ? 'text-black font-bold' : 'text-muted-foreground group-hover:text-black'}`} />
+                    <Briefcase
+                      className={`w-3 h-3 ${isExpanded ? 'text-white' : 'text-muted-foreground group-hover:text-white'}`}
+                    />
                   </motion.div>
 
-                  {/* Card Content */}
+                  {/* Card */}
                   <motion.div
                     onClick={() => setExpandedCard(isExpanded ? null : exp.id)}
-                    whileHover={{ scale: 1.01, x: 6 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    className={`p-6 bg-card/50 border rounded-lg cursor-pointer transition-all duration-300 relative select-none ${
+                    className={`p-5 sm:p-6 bg-card rounded-2xl cursor-pointer transition-all duration-200 select-none border ${
                       isExpanded
-                        ? 'border-orange-500/60 shadow-[0_10px_35px_rgba(245,158,11,0.06)]'
-                        : 'border-border hover:border-orange-500/30'
+                        ? 'border-primary/40 shadow-md'
+                        : 'border-border hover:border-primary/25'
                     }`}
                   >
-                    {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent w-fit">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
+                      <h3
+                        className="font-bold text-lg text-gradient"
+                        style={{ fontFamily: 'var(--font-instrument-serif)' }}
+                      >
                         {exp.title}
                       </h3>
-                      
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
                         <Calendar className="w-3.5 h-3.5" />
                         <span>{exp.period}</span>
                       </div>
                     </div>
 
-                    <p className="text-foreground/80 font-medium text-base mb-2">
+                    <p className="text-foreground font-semibold text-sm mb-1">
                       {exp.companies.join(' & ')}
                     </p>
-                    
-                    <p className="text-muted-foreground text-sm">
-                      {exp.description}
-                    </p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{exp.description}</p>
 
-                    {/* Expand Indicator Chevron */}
-                    <div className="absolute bottom-4 right-4 text-muted-foreground hover:text-orange-400 transition-colors">
-                      <motion.div
-                        animate={{ rotate: isExpanded ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronDown className="w-5 h-5" />
+                    {/* Chevron */}
+                    <div className="absolute bottom-4 right-4 text-muted-foreground">
+                      <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
+                        <ChevronDown className="w-4 h-4" />
                       </motion.div>
                     </div>
 
-                    {/* Expandable detailed bullets list */}
+                    {/* Expandable bullets */}
                     <AnimatePresence initial={false}>
                       {isExpanded && (
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
+                          animate={{ opacity: 1, height: 'auto', marginTop: 14 }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.3, ease: 'easeInOut' }}
-                          className="overflow-hidden border-t border-border/80 pt-4"
-                          onClick={(e) => e.stopPropagation()} // Prevent close on clicking inner text
+                          className="overflow-hidden border-t border-border/60 pt-4"
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          <ul className="space-y-3 text-sm text-muted-foreground list-disc list-inside">
+                          <ul className="space-y-2.5 text-sm text-muted-foreground">
                             {exp.bullets.map((bullet, bIdx) => (
                               <motion.li
                                 key={bIdx}
-                                initial={{ opacity: 0, x: -15 }}
+                                initial={{ opacity: 0, x: -12 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: bIdx * 0.08 }}
-                                className="leading-relaxed hover:text-foreground transition-colors"
+                                transition={{ delay: bIdx * 0.07 }}
+                                className="flex gap-2 items-start leading-relaxed"
                               >
-                                <span className="ml-1 text-muted-foreground hover:text-foreground transition-colors">{bullet}</span>
+                                <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-primary/60" />
+                                {bullet}
                               </motion.li>
                             ))}
                           </ul>

@@ -13,43 +13,45 @@ type ProjectItem = {
   tags: readonly string[] | string[]
 }
 
-// Sub-component for 3D tilting project card
-function ProjectCard({ 
-  project, 
-  index, 
-  onOpenDetails 
-}: { 
+function ProjectCard({
+  project,
+  index,
+  onOpenDetails,
+}: {
   project: ProjectItem
   index: number
-  onOpenDetails: (project: ProjectItem) => void 
+  onOpenDetails: (project: ProjectItem) => void
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const { language } = usePortfolioContext()
-  
-  // Motion values for mouse tilt tracking
+
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-
-  // Map coordinates (-0.5 to 0.5) to degrees (-10 to 10)
-  const rotateX = useTransform(y, [-0.5, 0.5], [10, -10])
-  const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10])
+  const rotateX = useTransform(y, [-0.5, 0.5], [6, -6])
+  const rotateY = useTransform(x, [-0.5, 0.5], [-6, 6])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return
     const rect = cardRef.current.getBoundingClientRect()
-    const width = rect.width
-    const height = rect.height
-    
-    const mouseX = e.clientX - rect.left
-    const mouseY = e.clientY - rect.top
-    
-    x.set((mouseX / width) - 0.5)
-    y.set((mouseY / height) - 0.5)
+    x.set((e.clientX - rect.left) / rect.width - 0.5)
+    y.set((e.clientY - rect.top) / rect.height - 0.5)
   }
 
   const handleMouseLeave = () => {
     x.set(0)
     y.set(0)
+  }
+
+  // Category emoji map
+  const categoryEmoji: Record<string, string> = {
+    'UI/UX Design': '🎨',
+    'Graphic Design': '✏️',
+    'Social Media': '📱',
+    'Web Design': '🖥️',
+    'Desain UI/UX': '🎨',
+    'Desain Grafis': '✏️',
+    'Media Sosial': '📱',
+    'Desain Web': '🖥️',
   }
 
   return (
@@ -58,75 +60,72 @@ function ProjectCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={() => onOpenDetails(project)}
-      style={{ 
-        rotateX, 
-        rotateY, 
-        transformStyle: 'preserve-3d',
-        perspective: 1000
-      }}
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1000 }}
       variants={{
-        hidden: { opacity: 0, scale: 0.8, y: 20 },
+        hidden: { opacity: 0, y: 20, scale: 0.96 },
         visible: {
           opacity: 1,
-          scale: 1,
           y: 0,
-          transition: { duration: 0.5, delay: index * 0.05 },
+          scale: 1,
+          transition: { duration: 0.5, delay: index * 0.06 },
         },
       }}
-      whileHover={{
-        y: -12,
-        scale: 1.02,
-        boxShadow: '0 20px 40px rgba(245, 158, 11, 0.2), 0 10px 20px rgba(244, 63, 94, 0.1)',
-      }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="project-card group relative overflow-hidden bg-card/50 border border-border rounded-lg p-6 hover:border-orange-500/40 transition-all cursor-pointer select-none"
+      whileHover={{ y: -6 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+      className="group relative overflow-hidden bg-card border border-border rounded-2xl p-5 hover:border-primary/30 hover:shadow-[0_12px_32px_rgba(255,107,53,0.10)] transition-all cursor-pointer select-none"
     >
-      {/* Background gradient on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-orange-500/5 to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      {/* Hover bg */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/4 via-orange-500/4 to-rose-500/4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-      {/* Content wrapper with Z-translation for 3D parallax depth */}
-      <div className="relative z-10 pointer-events-none flex flex-col justify-between h-full" style={{ transform: 'translateZ(40px)' }}>
-        <div>
-          <div className="w-12 h-12 bg-gradient-to-br from-amber-500/10 to-rose-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:from-amber-500/25 group-hover:to-rose-500/25 transition-all duration-350">
-            <span className="text-2xl">📁</span>
-          </div>
-
-          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors">
-            {project.title}
-          </h3>
-          <p className="text-orange-600 dark:text-orange-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            {project.category}
-          </p>
-          <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-            {project.description}
-          </p>
+      <div className="relative z-10 flex flex-col justify-between h-full" style={{ transform: 'translateZ(30px)' }}>
+        {/* Icon */}
+        <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+          <span className="text-xl">
+            {categoryEmoji[project.category] || '📁'}
+          </span>
         </div>
 
-        <div>
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[10px] px-2 py-0.5 bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded border border-orange-500/20 font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* Category tag */}
+        <p className="text-[11px] font-semibold text-primary uppercase tracking-wider mb-1">
+          {project.category}
+        </p>
 
-          {/* View Details Button */}
-          <motion.button
-            whileHover={{ x: 5 }}
-            className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-350 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer pointer-events-auto mt-2"
-            onClick={(e) => {
-              e.stopPropagation()
-              onOpenDetails(project)
-            }}
-          >
-            {language === 'en' ? 'View Details →' : 'Lihat Detail →'}
-          </motion.button>
+        {/* Title */}
+        <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">
+          {project.title}
+        </h3>
+
+        {/* Desc */}
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">
+          {project.description}
+        </p>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[10px] px-2 py-0.5 bg-muted text-muted-foreground rounded-lg border border-border font-medium hover:border-primary/30 hover:text-primary transition-colors"
+            >
+              {tag}
+            </span>
+          ))}
         </div>
+
+        {/* CTA */}
+        <motion.button
+          whileHover={{ x: 4 }}
+          className="text-primary text-xs font-semibold flex items-center gap-1.5 cursor-pointer pointer-events-auto mt-auto"
+          onClick={(e) => {
+            e.stopPropagation()
+            onOpenDetails(project)
+          }}
+        >
+          {language === 'en' ? 'View Details' : 'Lihat Detail'}
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </motion.button>
       </div>
     </motion.div>
   )
@@ -135,19 +134,13 @@ function ProjectCard({
 export function Portfolio() {
   const { ref, isVisible } = useScrollAnimation()
   const { t, language } = usePortfolioContext()
-  
-  // Use "All" in the local state variable to filter easily, checking translations.en.portfolio.all
-  const [selectedCategory, setSelectedCategory] = useState<string>('All')
 
-  // Find if category is 'All' or translated 'All' (e.g. 'Semua')
+  const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const isAllSelected = selectedCategory === 'All' || selectedCategory === t.portfolio.all
 
   const filteredProjects = isAllSelected
     ? t.portfolio.items
-    : t.portfolio.items.filter(p => {
-        // Match English category mappings safely
-        // Translations lists category names in the translations dictionary
-        // We match by name or index
+    : t.portfolio.items.filter((p) => {
         const catIdx = (t.portfolio.categories as readonly string[]).indexOf(selectedCategory)
         const enCat = t.portfolio.categories[catIdx]
         return p.category === selectedCategory || p.category === enCat
@@ -157,69 +150,75 @@ export function Portfolio() {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
   }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
   }
 
   return (
     <section
       id="portfolio"
       ref={ref}
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-background transition-colors duration-300"
+      className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isVisible ? 'visible' : 'hidden'}
         >
-          {/* Section Title */}
-          <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl font-bold mb-12 text-foreground transition-colors duration-300">
-            {language === 'en' ? (
-              <>
-                My <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text text-transparent">{t.portfolio.title}</span>
-              </>
-            ) : (
-              <>
-                <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text text-transparent">{t.portfolio.title}</span> Saya
-              </>
-            )}
-          </motion.h2>
+          {/* Heading */}
+          <motion.div variants={itemVariants} className="mb-10">
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span className="inline-block w-5 h-[1.5px] bg-primary" />
+              {language === 'en' ? 'Selected Works' : 'Karya Pilihan'}
+            </p>
+            <h2
+              className="text-foreground leading-tight"
+              style={{
+                fontFamily: 'var(--font-instrument-serif)',
+                fontSize: 'clamp(2.2rem, 5vw, 3.5rem)',
+                fontWeight: 400,
+              }}
+            >
+              {language === 'en' ? (
+                <>
+                  My <span className="italic text-gradient">{t.portfolio.title}</span>
+                </>
+              ) : (
+                <>
+                  <span className="italic text-gradient">{t.portfolio.title}</span> Saya
+                </>
+              )}
+            </h2>
+          </motion.div>
 
-          {/* Category Tabs */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-3 mb-12">
+          {/* Category filter */}
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-2 mb-10">
             {t.portfolio.categories.map((category) => {
-              const isSelected = selectedCategory === category || (category === t.portfolio.all && isAllSelected)
+              const isSelected =
+                selectedCategory === category ||
+                (category === t.portfolio.all && isAllSelected)
               return (
                 <motion.button
                   key={category}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`relative px-6 py-2 rounded-full font-semibold transition-all cursor-pointer overflow-hidden ${
+                  className={`relative px-5 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer overflow-hidden border ${
                     isSelected
                       ? 'text-white border-transparent'
-                      : 'bg-card text-muted-foreground hover:text-orange-500 hover:border-orange-500/30 border border-border'
+                      : 'bg-card text-muted-foreground hover:text-foreground border-border hover:border-primary/30'
                   }`}
                 >
                   <span className="relative z-10">{category}</span>
                   {isSelected && (
                     <motion.div
                       layoutId="activeCategory"
-                      className="absolute inset-0 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 shadow-md shadow-orange-500/20"
+                      className="absolute inset-0 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -228,7 +227,7 @@ export function Portfolio() {
             })}
           </motion.div>
 
-          {/* Projects Grid */}
+          {/* Grid */}
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedCategory + '-' + language}
@@ -236,7 +235,7 @@ export function Portfolio() {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
               {filteredProjects.map((project, index) => (
                 <ProjectCard
@@ -251,92 +250,97 @@ export function Portfolio() {
         </motion.div>
       </div>
 
-      {/* Modal Details Overlay */}
+      {/* Modal */}
       <AnimatePresence>
         {activeProject && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveProject(null)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-pointer"
+              className="absolute inset-0 bg-black/60 backdrop-blur-md cursor-pointer"
             />
 
-            {/* Modal Box */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 15 }}
+              initial={{ opacity: 0, scale: 0.93, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 15 }}
+              exit={{ opacity: 0, scale: 0.93, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative bg-card border border-border rounded-xl max-w-lg w-full overflow-hidden shadow-2xl z-10 transition-colors duration-300"
+              className="relative bg-card border border-border rounded-2xl max-w-md w-full overflow-hidden shadow-2xl z-10"
             >
-              {/* Close button top right */}
+              {/* Close */}
               <button
                 onClick={() => setActiveProject(null)}
-                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-lg font-bold p-1 bg-background border border-border hover:border-border/80 rounded-full w-7 h-7 flex items-center justify-center"
+                className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full bg-muted border border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-sm"
               >
                 ✕
               </button>
 
-              <div className="p-8">
-                {/* Header */}
-                <span className="text-xs px-2.5 py-1 bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-full border border-orange-500/20 font-semibold uppercase tracking-wider">
+              <div className="p-7">
+                <span className="text-[11px] px-2.5 py-1 bg-primary/10 text-primary rounded-full border border-primary/20 font-semibold uppercase tracking-wider">
                   {activeProject.category}
                 </span>
-                
-                <h3 className="text-3xl font-bold text-foreground mt-3 mb-2 leading-tight transition-colors duration-300">
+
+                <h3
+                  className="text-2xl mt-3 mb-2 text-foreground leading-tight"
+                  style={{ fontFamily: 'var(--font-instrument-serif)' }}
+                >
                   {activeProject.title}
                 </h3>
-                
-                <p className="text-muted-foreground text-sm mb-6 leading-relaxed transition-colors duration-300">
+
+                <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
                   {activeProject.description}
                 </p>
 
-                {/* Detailed Deliverables List */}
-                <div className="space-y-4 mb-6 border-t border-border/80 pt-4">
-                  <h4 className="text-xs font-bold text-orange-600 dark:text-orange-400/90 uppercase tracking-widest">{t.portfolio.modal.features}</h4>
-                  <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground list-disc list-inside leading-relaxed transition-colors duration-300">
-                    {language === 'en' ? (
-                      <>
-                        <li>Comprehensive design sprints, user profiles, and interactive user journeys.</li>
-                        <li>Clean style guides containing typographic scales, dynamic shadows, and HSL grids.</li>
-                        <li>Interactive high-fidelity prototypes tested and approved by project stakeholders.</li>
-                      </>
-                    ) : (
-                      <>
-                        <li>Sprint desain komprehensif, profil pengguna, dan alur perjalanan pengguna interaktif.</li>
-                        <li>Panduan gaya bersih yang berisi skala tipografi, bayangan dinamis, dan kisi HSL.</li>
-                        <li>Prototipe interaktif high-fidelity yang diuji dan disetujui oleh para pemangku kepentingan proyek.</li>
-                      </>
-                    )}
+                <div className="space-y-3 mb-5 border-t border-border/60 pt-4">
+                  <h4 className="text-[11px] font-bold text-primary uppercase tracking-widest">
+                    {t.portfolio.modal.features}
+                  </h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    {(language === 'en'
+                      ? [
+                          'Comprehensive design sprints, user profiles, and interactive user journeys.',
+                          'Clean style guides with typographic scales, dynamic shadows, and HSL grids.',
+                          'Interactive high-fidelity prototypes tested and approved by stakeholders.',
+                        ]
+                      : [
+                          'Sprint desain komprehensif, profil pengguna, dan alur perjalanan pengguna interaktif.',
+                          'Panduan gaya bersih yang berisi skala tipografi, bayangan dinamis, dan kisi HSL.',
+                          'Prototipe interaktif high-fidelity yang diuji dan disetujui oleh para pemangku kepentingan proyek.',
+                        ]
+                    ).map((item, i) => (
+                      <li key={i} className="flex gap-2 items-start">
+                        <span className="mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-primary/60" />
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                 </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-8">
+                <div className="flex flex-wrap gap-1.5 mb-6">
                   {activeProject.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs px-3 py-1 bg-background text-foreground/80 rounded border border-border font-medium transition-colors duration-300"
+                      className="text-xs px-2.5 py-1 bg-muted text-muted-foreground rounded-lg border border-border font-medium"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                {/* Actions */}
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex gap-3">
                   <button
-                    onClick={() => alert(language === 'en' ? 'Demo prototype launched successfully!' : 'Prototipe demo berhasil diluncurkan!')}
-                    className="flex-grow py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-orange-500/15 hover:brightness-110 transition-all cursor-pointer text-center"
+                    onClick={() =>
+                      alert(language === 'en' ? 'Demo launched!' : 'Demo diluncurkan!')
+                    }
+                    className="flex-grow py-2.5 bg-foreground text-background font-semibold rounded-xl hover:opacity-85 transition-all cursor-pointer text-sm"
                   >
                     {t.portfolio.modal.viewLive}
                   </button>
                   <button
                     onClick={() => setActiveProject(null)}
-                    className="px-6 py-3 border border-border text-muted-foreground hover:bg-muted font-semibold rounded-lg hover:text-foreground transition-all cursor-pointer text-center transition-colors duration-300"
+                    className="px-5 py-2.5 border border-border text-muted-foreground hover:text-foreground font-semibold rounded-xl transition-all cursor-pointer text-sm"
                   >
                     {t.portfolio.modal.close}
                   </button>
@@ -349,5 +353,3 @@ export function Portfolio() {
     </section>
   )
 }
-
-
