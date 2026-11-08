@@ -53,7 +53,6 @@ function FlipCard({
 export function About() {
   const { ref, isVisible } = useScrollAnimation()
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
-  const [expandedOrg, setExpandedOrg] = useState(false)
   const { t, language } = usePortfolioContext()
 
   const containerVariants = {
@@ -222,71 +221,6 @@ export function About() {
                   </motion.div>
                 )
               })}
-            </motion.div>
-          </motion.div>
-
-          {/* Organizational Experience */}
-          <motion.div variants={itemVariants} className="space-y-5">
-            <h3
-              className="text-xl italic text-primary"
-              style={{ fontFamily: 'var(--font-instrument-serif)' }}
-            >
-              {t.about.orgTitle}
-            </h3>
-
-            <motion.div
-              onClick={() => setExpandedOrg(!expandedOrg)}
-              className={`p-5 bg-card border rounded-2xl cursor-pointer transition-all duration-200 select-none ${
-                expandedOrg ? 'border-primary/40 shadow-sm' : 'border-border hover:border-primary/25'
-              }`}
-            >
-              <div className="flex gap-4 items-start">
-                <div className={`p-2.5 rounded-xl transition-colors ${expandedOrg ? 'bg-primary/15 text-primary' : 'bg-muted text-muted-foreground'}`}>
-                  <Compass className="w-5 h-5" />
-                </div>
-                <div className="flex-grow">
-                  <h4 className={`font-bold text-base leading-tight transition-colors ${expandedOrg ? 'text-primary' : 'text-foreground'}`}>
-                    {t.about.orgCard.title}
-                  </h4>
-                  <p className="text-primary text-sm mt-0.5 font-medium">{t.about.orgCard.school}</p>
-                  <div className="flex items-center gap-1.5 text-muted-foreground text-xs mt-1">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>{t.about.orgCard.period}</span>
-                  </div>
-
-                  <AnimatePresence initial={false}>
-                    {expandedOrg && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto', marginTop: 14 }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden border-t border-border/60 pt-4"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside">
-                          {t.about.orgCard.details.map((detail, index) => {
-                            const parts = detail.split(':')
-                            if (parts.length > 1) {
-                              return (
-                                <li key={index} className="leading-relaxed">
-                                  <strong>{parts[0]}:</strong>
-                                  <span>{parts.slice(1).join(':')}</span>
-                                </li>
-                              )
-                            }
-                            return (
-                              <li key={index} className="leading-relaxed">
-                                {detail}
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
             </motion.div>
           </motion.div>
         </motion.div>

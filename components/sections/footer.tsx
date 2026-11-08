@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
-import { Mail, Phone, Check } from 'lucide-react'
+import { Mail, Phone, Check, Heart } from 'lucide-react'
 import { Magnetic } from '@/components/ui/magnetic'
 import { usePortfolioContext } from '@/components/ui/portfolio-context'
 
@@ -195,7 +195,7 @@ export function Footer() {
             </p>
             <p className="flex items-center gap-1.5">
               {language === 'en' ? 'Built with' : 'Dibangun dengan'}
-              <span className="text-primary">♥</span>
+              <Heart className="w-3.5 h-3.5 text-primary fill-primary inline-block" />
               {language === 'en' ? 'using Next.js' : 'menggunakan Next.js'}
             </p>
           </motion.div>

@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import { smoothScrollToId } from '@/lib/scroll-utils'
 import { usePortfolioContext } from '@/components/ui/portfolio-context'
 import Image from 'next/image'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopy, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 export function Hero() {
   const { t, language, theme, mounted } = usePortfolioContext()
@@ -12,6 +14,14 @@ export function Hero() {
   const [typedText, setTypedText] = useState('')
   const [roleIndex, setRoleIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [copiedEmail, setCopiedEmail] = useState(false)
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault()
+    navigator.clipboard.writeText('qulbiazzumi29@gmail.com')
+    setCopiedEmail(true)
+    setTimeout(() => setCopiedEmail(false), 2000)
+  }
 
   // Reset typewriter when language changes
   useEffect(() => {
@@ -64,7 +74,7 @@ export function Hero() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
+      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
     },
   }
 
@@ -147,9 +157,9 @@ export function Hero() {
               className="flex items-center gap-6 sm:gap-8 mb-8 py-4 border-y border-border"
             >
               {[
-                { value: '2+', label: language === 'en' ? 'Years Exp.' : 'Tahun Pengalaman' },
-                { value: '20+', label: language === 'en' ? 'Projects' : 'Proyek' },
-                { value: '10+', label: language === 'en' ? 'Clients' : 'Klien' },
+                { value: '3+', label: language === 'en' ? 'Years Exp.' : 'Tahun Pengalaman' },
+                { value: '15+', label: language === 'en' ? 'Projects' : 'Proyek' },
+                { value: '6+', label: language === 'en' ? 'Company Experience' : 'Pengalaman Perusahaan' },
               ].map((stat) => (
                 <div key={stat.value} className="text-left">
                   <p
@@ -179,17 +189,26 @@ export function Hero() {
                 </svg>
                 {t.hero.viewWork}
               </a>
-              <a
-                href={t.hero.portfolioLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3 border border-border rounded-xl text-foreground font-semibold hover:border-primary/50 hover:text-primary hover:-translate-y-0.5 transition-all cursor-pointer text-sm"
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                title={copiedEmail ? (language === 'en' ? 'Copied to clipboard!' : 'Tersalin ke clipboard!') : (language === 'en' ? 'Click to copy email' : 'Klik untuk menyalin email')}
+                className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 border border-border rounded-xl text-foreground font-semibold hover:border-primary/50 hover:text-primary hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer text-sm bg-card shadow-sm"
               >
-                {t.hero.portfolio}
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+                <span>{t.hero.email}</span>
+                <span className="flex items-center justify-center w-5 h-5 rounded-md bg-muted/80 text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+                  {copiedEmail ? (
+                    <FontAwesomeIcon icon={faCheck} className="w-3 h-3 text-emerald-500" />
+                  ) : (
+                    <FontAwesomeIcon icon={faCopy} className="w-3 h-3 transition-transform group-hover:scale-110" />
+                  )}
+                </span>
+                {copiedEmail && (
+                  <span className="absolute -top-8 px-2 py-0.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-card border border-emerald-500/30 rounded-md shadow-md animate-in fade-in duration-150">
+                    {language === 'en' ? 'Copied!' : 'Tersalin!'}
+                  </span>
+                )}
+              </button>
             </motion.div>
 
             {/* Social links row */}

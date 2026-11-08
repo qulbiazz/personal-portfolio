@@ -64,7 +64,7 @@ export function Skills() {
           </motion.div>
 
           {/* Skills Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             {t.skills.skillsData.map((skill, index) => (
               <motion.div
                 key={skill.name}
@@ -74,9 +74,7 @@ export function Skills() {
                 dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                 dragElastic={0.35}
                 dragTransition={{ bounceStiffness: 250, bounceDamping: 18 }}
-                className={`group p-5 bg-card border border-border rounded-2xl text-center hover:border-primary/30 hover:shadow-[0_8px_24px_rgba(255,107,53,0.10)] transition-all cursor-grab active:cursor-grabbing relative overflow-hidden ${
-                  index === 4 ? 'md:col-start-2' : ''
-                }`}
+                className="group p-5 bg-card border border-border rounded-2xl text-center hover:border-primary/30 hover:shadow-[0_8px_24px_rgba(255,107,53,0.10)] transition-all cursor-grab active:cursor-grabbing relative overflow-hidden w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.75rem)] lg:w-[calc(33.333%-0.75rem)] max-w-[290px]"
               >
                 {/* Hover glow */}
                 <motion.div
@@ -125,6 +123,24 @@ export function Skills() {
                       />
                     </div>
                     <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">{skill.desc}</p>
+
+                    {'subSkills' in skill && Array.isArray(skill.subSkills) && (
+                      <div className="mt-3 pt-2.5 border-t border-border/40">
+                        <span className="text-[9px] uppercase tracking-wider text-muted-foreground/80 font-bold block mb-1.5">
+                          {language === 'en' ? 'Core Capabilities' : 'Keahlian Dikuasai'}
+                        </span>
+                        <div className="flex flex-wrap gap-1">
+                          {(skill.subSkills as readonly string[]).map((sub: string) => (
+                            <span
+                              key={sub}
+                              className="text-[9.5px] px-2 py-0.5 bg-primary/8 text-primary rounded-md border border-primary/15 font-medium"
+                            >
+                              {sub}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -145,10 +161,10 @@ export function Skills() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
-                  {t.skills.hardSkills}
+                  {t.skills.softSkills}
                 </h4>
                 <p className="text-sm text-foreground/80 leading-relaxed">
-                  {t.skills.skillsData.map((s) => s.name).join(', ')}
+                  {t.skills.softSkillsList}
                 </p>
               </div>
               <div>

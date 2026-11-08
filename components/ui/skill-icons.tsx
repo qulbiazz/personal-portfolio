@@ -1,4 +1,6 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode } from '@fortawesome/free-solid-svg-icons'
 
 export function FigmaLogo({ className = 'w-10 h-10' }: { className?: string }) {
   return (
@@ -87,29 +89,66 @@ export function CanvaLogo({ className = 'w-10 h-10' }: { className?: string }) {
   )
 }
 
-export function ProgrammerLogo({ className = 'w-10 h-10' }: { className?: string }) {
+export function HtmlCssLogo({ className = 'w-10 h-10' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 128 128" className={className} xmlns="http://www.w3.org/2000/svg" aria-label="Visual Studio Code logo">
-      <path
-        fill="#0065A9"
-        d="M123.471 13.82 97.097 1.12A7.973 7.973 0 0 0 88 2.668L1.662 81.387a5.333 5.333 0 0 0 .006 7.887l7.052 6.411a5.333 5.333 0 0 0 6.811.303l103.971-78.875c3.488-2.646 8.498-.158 8.498 4.22v-.306a8.001 8.001 0 0 0-4.529-7.208Z"
-      />
-      <path
-        fill="#007ACC"
-        d="m123.471 114.181-26.374 12.698A7.973 7.973 0 0 1 88 125.333L1.662 46.613a5.333 5.333 0 0 1 .006-7.887l7.052-6.411a5.333 5.333 0 0 1 6.811-.303l103.971 78.874c3.488 2.647 8.498.159 8.498-4.219v.306a8.001 8.001 0 0 1-4.529 7.208Z"
-      />
-      <path
-        fill="#1F9CF0"
-        d="M97.098 126.882A7.977 7.977 0 0 1 88 125.333c2.952 2.952 8 .861 8-3.314V5.98c0-4.175-5.048-6.266-8-3.313a7.977 7.977 0 0 1 9.098-1.549L123.467 13.8A8 8 0 0 1 128 21.01v85.982a8 8 0 0 1-4.533 7.21l-26.369 12.681Z"
-      />
-      <path
-        fill="#FFFFFF"
-        fillOpacity="0.22"
-        d="M90.69 127.126a7.968 7.968 0 0 0 6.349-.244l26.353-12.681a8 8 0 0 0 4.53-7.21V21.009a8 8 0 0 0-4.53-7.21L97.039 1.12a7.97 7.97 0 0 0-9.093 1.548l-50.45 46.026-21.974-16.68a5.328 5.328 0 0 0-6.807.302l-7.048 6.411a5.336 5.336 0 0 0-.006 7.888L20.718 64 1.662 81.386a5.335 5.335 0 0 0 .006 7.888l7.048 6.411a5.328 5.328 0 0 0 6.807.303l21.975-16.681 50.45 46.026a7.959 7.959 0 0 0 2.742 1.793Zm5.252-92.184L57.662 64l38.28 29.057V34.943Z"
-      />
+    <svg viewBox="0 0 128 128" className={className} xmlns="http://www.w3.org/2000/svg" aria-label="HTML5 and CSS3 logo">
+      <path fill="#E44D26" d="M19.1 114.7L9.8 10.7h108.4l-9.3 104-44.9 12.6-44.9-12.6z"/>
+      <path fill="#F16529" d="M64 118.8l37.1-10.4 7.9-88.7H64v99.1z"/>
+      <path fill="#EBEBEB" d="M64 51.5H46.6l-1.2-13.6H64V24.5H31.7l3.6 40.4H64v-13.4zm0 37.1l-18.7-5-1.2-13.6H30.6l2.4 27 31 8.6v-17z"/>
+      <path fill="#FFFFFF" d="M64 51.5h17.4l-1.6 18.5-15.8 4.3v13.8l31-8.6 4-44.6H64v16.6zm0-27h33.4l-1.2 13.4H64V24.5z"/>
     </svg>
   )
 }
+
+export function JavaScriptLogo({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 128 128" className={className} xmlns="http://www.w3.org/2000/svg" aria-label="JavaScript logo">
+      <rect width="128" height="128" rx="26" fill="#F7DF1E"/>
+      <path fill="#000000" d="M72.3 87.2c2.4 3.9 5.6 6.8 11.2 6.8 4.7 0 7.7-2.3 7.7-5.5 0-3.8-3.1-5.2-8.3-7.5l-2.8-1.2c-8.2-3.5-13.7-7.9-13.7-17.4 0-8.6 6.6-15.2 17-15.2 7.4 0 12.6 2.6 16.3 9.1l-7.7 4.9c-1.7-2.9-3.7-4.2-8.6-4.2-3.9 0-6.4 2.5-6.4 5.2 0 3.2 2.1 4.5 7.1 6.7l2.8 1.2c9.7 4.2 15.1 8.5 15.1 18.1 0 10.4-8.2 16.2-18.7 16.2-10.5 0-17.1-5.1-20.2-12.3l8.6-4.9zM36.1 87.8c1.8 3.1 3.5 5.7 7.5 5.7 3.9 0 6.3-1.6 6.3-7.7V48h10.4v37.6c0 11.8-6.9 17.1-16.7 17.1-8.5 0-13.5-4.4-16.1-10.7l8.6-4.2z"/>
+    </svg>
+  )
+}
+
+export function PhpLogo({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 128 128" className={className} xmlns="http://www.w3.org/2000/svg" aria-label="PHP logo">
+      <ellipse cx="64" cy="64" rx="60" ry="36" fill="#777BB4"/>
+      <ellipse cx="64" cy="64" rx="55" ry="31" fill="#4F5B93"/>
+      <ellipse cx="64" cy="64" rx="52" ry="28" fill="#777BB4"/>
+      <path fill="#FFFFFF" d="M38.8 51.5h-9.7l-4.7 25h7l2-10.5h5.4c6.2 0 9.8-3 10.9-8.7 1.1-5.9-1.9-8.8-8-8.8zm-1.8 9.5h-4.3l1.8-9.5h4.3c2.7 0 4.1 1.1 3.5 4.3-.5 3.3-2.6 5.2-5.3 5.2zm32.8-9.5h-7l-1.8 9.5h-5.4l1.8-9.5h-7l-4.7 25h7l2-10.5h5.4l-2 10.5h7l4.7-25zm29.8 0H89.9l-4.7 25h7l2-10.5h5.4c6.2 0 9.8-3 10.9-8.7 1.1-5.9-1.9-8.8-8-8.8zm-1.8 9.5h-4.3l1.8-9.5h4.3c2.7 0 4.1 1.1 3.5 4.3-.5 3.3-2.6 5.2-5.3 5.2z"/>
+    </svg>
+  )
+}
+
+export function DartFlutterLogo({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 128 128" className={className} xmlns="http://www.w3.org/2000/svg" aria-label="Flutter and Dart logo">
+      <defs>
+        <linearGradient id="df-grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#54C5F8" />
+          <stop offset="100%" stopColor="#29B6F6" />
+        </linearGradient>
+        <linearGradient id="df-grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#0175C2" />
+          <stop offset="100%" stopColor="#02569B" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(14, 4) scale(0.61)">
+        <path fill="url(#df-grad1)" d="M100.2 0L0 100.2l30.8 30.8L161.8 0H100.2z" />
+        <path fill="url(#df-grad1)" d="M100.2 99.4L39.8 159.8l30.8 30.8 91.2-91.2H100.2z" />
+        <path fill="#0D47A1" d="M70.6 190.6l28.6 11.4h62.6l-60.4-60.4-30.8 49z" />
+        <path fill="url(#df-grad2)" d="M101.4 141.6L70.6 110.8l30.8-30.8 60.4 60.4-30.6 30.8z" />
+      </g>
+    </svg>
+  )
+}
+export const FlutterLogo = DartFlutterLogo;
+export const MobileDevLogo = DartFlutterLogo;
+
+export function WebDevLogo({ className = 'w-10 h-10' }: { className?: string }) {
+  return <HtmlCssLogo className={className} />
+}
+export const ProgrammerLogo = WebDevLogo;
 
 export function WordPressLogo({ className = 'w-10 h-10' }: { className?: string }) {
   return (
@@ -150,22 +189,35 @@ export function SkillLogo({
     return <CanvaLogo className={className} />
   }
 
+  if (normalized.includes('html') || normalized.includes('css')) {
+    return <HtmlCssLogo className={className} />
+  }
+
+  if (normalized.includes('javascript') || normalized.includes('typescript') || normalized.includes('js')) {
+    return <JavaScriptLogo className={className} />
+  }
+
+  if (normalized.includes('php') || normalized.includes('mysql')) {
+    return <PhpLogo className={className} />
+  }
+
+  if (normalized.includes('flutter') || normalized.includes('dart') || normalized.includes('mobile')) {
+    return <DartFlutterLogo className={className} />
+  }
+
   if (normalized.includes('wordpress')) {
     return <WordPressLogo className={className} />
   }
 
   if (
+    normalized.includes('web') ||
     normalized.includes('programmer') ||
     normalized.includes('code') ||
     normalized.includes('developer') ||
     normalized.includes('software')
   ) {
-    return <ProgrammerLogo className={className} />
+    return <WebDevLogo className={className} />
   }
 
-  if (fallbackEmoji) {
-    return <span className="text-3xl select-none">{fallbackEmoji}</span>
-  }
-
-  return null
+  return <FontAwesomeIcon icon={faCode} className={className} />
 }
